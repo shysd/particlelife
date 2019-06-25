@@ -4,6 +4,8 @@ class Particle {
 		this.r = 10;
 		this.pos = createVector(random(width), random(height));
 		this.vel = createVector(0.5, 0);
+		this.nx = random(1, 100);
+		this.speed = 0.2;
 	}
 
 	show(){
@@ -20,7 +22,7 @@ class Particle {
 				fill(0, 255, 0);
 				break;
 			default:
-				fill(255, 0, 0);
+				fill(0, 0, 0);
 				break;
 		}
 
@@ -33,19 +35,59 @@ class Particle {
 	}
 
 
-	update(){
-		// this.pos = this.pos.add(p5.Vector.mult(p5.Vector.fromAngle(degrees(random(0, 360))), 5));
+	update(neighbour){
+		// this.nx++;
+		// this.pos = this.pos.add(p5.Vector.mult(p5.Vector.fromAngle(degrees(noise(this.nx))), 2));
+		if(p5.Vector.dist(this.pos, neighbour.pos) < 2*this.r){
+			this.repel(neighbour, 0);
+			return;
+		}
+
+
+		switch(neighbour.type){
+			case 1:
+				switch(this.type){
+					case 1:
+						this.attract(neighbour, 0.5*this.speed);
+					case 2:
+						this.repel(neighbour, this.speed);
+					case 3:
+						this.repel(neighbour, this.speed);
+				}
+
+			case 2:
+				switch(this.type){
+					case 1:
+						this.repel(neighbour, this.speed);
+					case 2:
+						this.attract(neighbour, 0.5*this.speed);
+					case 3:
+						this.repel(neighbour, this.speed);
+				}
+
+			case 3:
+				switch(this.type){
+					case 1:
+						this.repel(neighbour, this.speed);
+					case 2:
+						this.repel(neighbour, this.speed);
+					case 3:
+						this.attract(neighbour, 0.5*this.speed);
+				}
+		}
 	}
 
-	attract(neighbour){
+	attract(neighbour, speed){
 		var velc = p5.Vector.sub(neighbour.pos, this.pos);
 		velc.normalize();
+		velc.mult(speed);
 		this.pos.add(velc);
 	}
 
-	repel(neighbour){
+	repel(neighbour, speed){
 		var velc = p5.Vector.sub(this.pos, neighbour.pos);
 		velc.normalize();
+		velc.mult(speed);
 		this.pos.add(velc);
 	}
 }
