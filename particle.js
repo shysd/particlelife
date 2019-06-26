@@ -19,7 +19,7 @@ class Particle {
 				fill(0, 0, 255);
 				break;
 			case 3:
-				fill(0, 255, 0);
+				fill(0, 200, 0);
 				break;
 			default:
 				fill(0, 0, 0);
@@ -30,16 +30,15 @@ class Particle {
 
 		if(this.pos.x > width - this.r) this.pos.x = width - this.r;
 		if(this.pos.y > height - this.r) this.pos.y = height - this.r;
-		if(this.pos.x < this.r) this.pos.x = 0 + this.r;
-		if(this.pos.y < this.r) this.pos.y = 0 + this.r;
+		if(this.pos.x < this.r) this.pos.x = this.r;
+		if(this.pos.y < this.r) this.pos.y = this.r;
 	}
 
 
 	update(neighbour){
-		// this.nx++;
-		// this.pos = this.pos.add(p5.Vector.mult(p5.Vector.fromAngle(degrees(noise(this.nx))), 2));
+
 		if(p5.Vector.dist(this.pos, neighbour.pos) < 2*this.r){
-			this.repel(neighbour, 0);
+			this.repel(neighbour, 2);
 			return;
 		}
 
