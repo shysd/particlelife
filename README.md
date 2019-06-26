@@ -3,8 +3,8 @@
 JavaScript implementation of simulation of particle life.
 
 ### Now live on shreyasdethe.github.io/particlelife
-Hit refresh for another random configuration of particles
 ---
+Hit refresh for another random configuration of particles
 
 #### Rules
 - Same colour particles attract each other
