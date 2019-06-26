@@ -38,7 +38,7 @@ class Particle {
 	update(neighbour){
 
 		if(p5.Vector.dist(this.pos, neighbour.pos) < 2*this.r){
-			this.repel(neighbour, 2);
+			this.repel(neighbour, 1);
 			return;
 		}
 
