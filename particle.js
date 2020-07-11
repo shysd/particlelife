@@ -8,7 +8,7 @@ class Particle {
 	}
 
 	show() {
-		if (this.N == 0 || this.N < 2) fill(0, 200, 0, 200);
+		if (this.N < 2) fill(0, 200, 0, 200);
 		else if (this.N < 3) fill(64, 128, 64, 200);
 		else if (this.N < 5) fill(64, 64, 200, 200);
 		else fill(250, 64, 64, 200);
