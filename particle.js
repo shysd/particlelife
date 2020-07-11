@@ -1,92 +1,49 @@
 class Particle {
-	constructor(vel){
-		this.type = random([1, 2, 3]);
-		this.r = 10;
+	constructor() {
+		this.r = 8;
 		this.pos = createVector(random(width), random(height));
-		this.vel = createVector(0.5, 0);
-		this.nx = random(1, 100);
-		this.speed = 0.2;
+		this.vel = createVector(0, 0);
+		this.speed = 7;
+		this.N = 0;	//number of neighbours
 	}
 
-	show(){
-		fill(255);
-
-		switch(this.type){			//change colours according to type
-			case 1:
-				fill(255, 0, 0);
-				break;
-			case 2:
-				fill(0, 0, 255);
-				break;
-			case 3:
-				fill(0, 200, 0);
-				break;
-			default:
-				fill(0, 0, 0);
-				break;
-		}
+	show() {
+		if (this.N == 0 || this.N < 2) fill(0, 200, 0, 200);
+		else if (this.N < 3) fill(64, 128, 64, 200);
+		else if (this.N < 5) fill(64, 64, 200, 200);
+		else fill(250, 64, 64, 200);
 
 		ellipse(this.pos.x, this.pos.y, this.r, this.r);
 
-		if(this.pos.x > width - this.r) this.pos.x = width - this.r;
-		if(this.pos.y > height - this.r) this.pos.y = height - this.r;
-		if(this.pos.x < this.r) this.pos.x = this.r;
-		if(this.pos.y < this.r) this.pos.y = this.r;
+		if (this.pos.x > width - this.r) this.pos.x = this.r;
+		if (this.pos.y > height - this.r) this.pos.y = this.r;
+		if (this.pos.x < this.r) this.pos.x = width - this.r;
+		if (this.pos.y < this.r) this.pos.y = height - this.r;
 	}
 
 
-	update(neighbour){
-
-		if(p5.Vector.dist(this.pos, neighbour.pos) < 2*this.r){
-			this.repel(neighbour, 1);
-			return;
+	update(surrounding) {
+		var neighbours = [];
+		for (var particle of surrounding) {
+			var distn = dist(particle.pos.x, particle.pos.y, this.pos.x, this.pos.y);
+			if (distn < cr) {
+				neighbours.push(particle);
+			}
 		}
 
-
-		switch(neighbour.type){
-			case 1:
-				switch(this.type){
-					case 1:
-						this.attract(neighbour, 0.5*this.speed);
-					case 2:
-						this.repel(neighbour, this.speed);
-					case 3:
-						this.repel(neighbour, this.speed);
-				}
-
-			case 2:
-				switch(this.type){
-					case 1:
-						this.repel(neighbour, this.speed);
-					case 2:
-						this.attract(neighbour, 0.5*this.speed);
-					case 3:
-						this.repel(neighbour, this.speed);
-				}
-
-			case 3:
-				switch(this.type){
-					case 1:
-						this.repel(neighbour, this.speed);
-					case 2:
-						this.repel(neighbour, this.speed);
-					case 3:
-						this.attract(neighbour, 0.5*this.speed);
-				}
+		this.N = neighbours.length;
+		var Nleft = 0,
+			Nright = 0;
+		for (var particle of neighbours) {
+			if (particle.pos.x < this.pos.x) Nleft++;
+			else Nright++;
 		}
-	}
+		var p = this.vel.heading();
+		// d(phi)/dt = alpha = beta*N*sign(Nr - Nl)
+		p += a + b * this.N * (Nright > Nleft ? 1 : -1);
+		this.vel = (p5.Vector.fromAngle(p));
+		this.vel.mult(this.speed);
+		this.pos.add(this.vel);
 
-	attract(neighbour, speed){
-		var velc = p5.Vector.sub(neighbour.pos, this.pos);
-		velc.normalize();
-		velc.mult(speed);
-		this.pos.add(velc);
-	}
-
-	repel(neighbour, speed){
-		var velc = p5.Vector.sub(this.pos, neighbour.pos);
-		velc.normalize();
-		velc.mult(speed);
-		this.pos.add(velc);
 	}
 }

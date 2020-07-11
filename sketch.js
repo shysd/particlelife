@@ -1,31 +1,26 @@
 function setup(){
-	createCanvas(1280, 720);
-	particles = new Array(450);
+	createCanvas(windowWidth, windowHeight);
+
+	// inherent properties of the system
+	a = 144;		// alpha
+	b = 8;			// beta
+	cr = 55;		// neightbour radius
+
+	particles = new Array(400);
 	for(var i = 0; i < particles.length; i++){
 		particles[i] = new Particle();
 	}
+
+	// angleMode(DEGREES);
 }
 
 function draw(){
-	// frameRate(1);
-	background(50);
+	frameRate(20);
+	background(64, 0, 64, 128);
 	noStroke();
 	for(var i = 0; i < particles.length; i++){
+		particles[i].update(particles);
 		particles[i].show();
-	}
-
-
-	var criticaldist = 150;
-	for(var i = 0; i < particles.length; i++){
-		for(var j = 0; j < particles.length; j++){
-			if(i != j){
-				let dist = particles[i].pos.dist(particles[j].pos);
-
-				if(dist < criticaldist){
-					particles[i].update(particles[j]);
-				}
-			}
-		}
 	}
 
 	// noLoop();
