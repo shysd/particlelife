@@ -7,11 +7,9 @@ JavaScript implementation of simulation of particle life.
 Hit refresh for another random configuration of particles
 
 #### Rules
-- Same colour particles attract each other
-- Different colour particles repel each other
-- All particles repel when they come too close
+- Based omn Primordial Particle system
 
 #### Todo
-- [ ] Add sliders for attraction and repulsion strength
+- [ ] Add sliders
 - [ ] Add mousePressed events
 - [ ] Add slider/textbox for critical distance
